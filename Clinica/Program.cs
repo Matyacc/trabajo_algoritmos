@@ -19,6 +19,7 @@ namespace Clinica
 	class Program
 	{	
 		public static void contratarMedico(Medico med,Clinica CL){
+			CL.medicos.Add(med);
 			foreach(Servicio servi in CL.servicios){
 				if(med.especialidad == servi.especialidad){
 					servi.plantel.Add(med);
