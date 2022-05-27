@@ -1,0 +1,5 @@
+C:\Users\accia\OneDrive\Documentos\SharpDevelop Projects\Trabajo integrador\Clinica\obj\Debug\Clinica.csprojResolveAssemblyReference.cache
+C:\Users\accia\OneDrive\Documentos\SharpDevelop Projects\Trabajo integrador\Clinica\bin\Debug\Clinica.exe
+C:\Users\accia\OneDrive\Documentos\SharpDevelop Projects\Trabajo integrador\Clinica\bin\Debug\Clinica.pdb
+C:\Users\accia\OneDrive\Documentos\SharpDevelop Projects\Trabajo integrador\Clinica\obj\Debug\Clinica.exe
+C:\Users\accia\OneDrive\Documentos\SharpDevelop Projects\Trabajo integrador\Clinica\obj\Debug\Clinica.pdb
