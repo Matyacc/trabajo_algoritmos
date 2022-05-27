@@ -28,17 +28,38 @@ namespace Clinica
 		private ArrayList Pacientes = new ArrayList();
 		private int Camas;
 		
-		
+		/*CONSTRUCTOR*/
 		public Servicio(Persona jf, string esp, int cantCamas)
 		{
 			this.Jefe = jf;
 			this.Especialidad = esp;
 			this.Camas =  cantCamas;
+			
 		}
-
+		
+		/*METODOS*/
+		public void agregarMedico(Medico med)
+		{
+			Plantel.Add(med);
+		}
+		
+		
+		
+		/*SETTER Y GETTER*/
 		public Persona jefe{
 			get{return Jefe;}
 		}
+		
+		public string especialidad{
+			get{ return Especialidad;}
+		}
+		
+		public ArrayList plantel{
+			get{
+				return Plantel;
+			}
+		}
+		}
 	
 	}
-}
+
