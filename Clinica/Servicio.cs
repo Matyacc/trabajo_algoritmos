@@ -43,6 +43,11 @@ namespace Clinica
 			Plantel.Add(med);
 		}
 		
+		public void agregarPaciente(Paciente pac)
+		{
+			Pacientes.Add(pac);
+		}
+		
 		
 		
 		/*SETTER Y GETTER*/
@@ -58,6 +63,10 @@ namespace Clinica
 			get{
 				return Plantel;
 			}
+		}
+		public int camas{
+			set{Camas = value;}
+			get{return Camas;}
 		}
 		}
 	

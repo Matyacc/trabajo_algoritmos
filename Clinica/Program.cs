@@ -13,6 +13,7 @@
  * 
  */
 using System;
+using System.Collections;
 
 namespace Clinica
 {
@@ -40,7 +41,7 @@ namespace Clinica
 			
 			Traumatologia = new Servicio(new Persona("Jefe","traumatologia",123),"Traumatologia",15);
 			Guardia = new Servicio(new Persona("Jefe","Guardia",123), "Guardia", 5);
-			Pediatria = new Servicio(new Persona("Jefe","Pediatria",123),"Pediatria",1);
+			Pediatria = new Servicio(new Medico("Jefe","Pediatria",123,2341,"Pediatria","Noche"),"Pediatria",1);
 			Oftalmologia = new Servicio(new Persona("Jefe","Oftalmologia",123),"Oftalmologia",2);
 			MG.servicios.Add(Traumatologia);
 			MG.servicios.Add(Guardia);
@@ -130,10 +131,58 @@ namespace Clinica
 					break; }
 					case "b":{Console.WriteLine("B");
 					break;}
-					case "c":{Console.WriteLine("C");
-					break;}
-					case "d":{Console.WriteLine("D");
-					break;}
+					case "c":{
+							string nombre, apellido;
+							int dni,opcionServicioInternacion,opcionMedico;
+							int contador = 0;
+							Medico medACargo = new Medico("asd","asd",123,123,"especial","Noche");
+							foreach (Servicio servicioprueba in MG.servicios){
+							contador = contador + 1;
+							Console.WriteLine(contador + ") " + servicioprueba.especialidad);
+							}
+							opcionServicioInternacion = int.Parse(Console.ReadLine()) - 1;
+							int conInt = 0;
+							foreach(Servicio servicioInternar in MG.servicios){
+								if(conInt == opcionServicioInternacion){
+									int contadorMedico;
+									if(servicioInternar.plantel.Count == 0){
+										Console.WriteLine("No hay medicos disponibles en este servicio");
+									}
+									else{
+										contadorMedico = 0;
+										foreach (Medico aCargo in servicioInternar.plantel){
+										contadorMedico = contadorMedico + 1;
+										Console.WriteLine(contadorMedico + ") " + aCargo.nombre + " " + aCargo.apellido);
+									}
+									opcionMedico = int.Parse(Console.ReadLine()) - 1;
+									contadorMedico = 0;
+									foreach (Medico medicoAcargo in servicioInternar.plantel){
+										if(opcionMedico == contadorMedico){
+											medACargo = medicoAcargo;
+										}else{
+											contadorMedico = contadorMedico + 1;
+											}
+									}
+									if(servicioInternar.camas == 0){Console.WriteLine("No hay camas libres");}
+											else{
+												Console.WriteLine("Ingrese el nombre del paciente");
+												nombre = Console.ReadLine();
+												Console.Clear();
+												Console.WriteLine("Ingrese el apellido del paciente");
+												apellido = Console.ReadLine();
+												Console.Clear();
+												Console.WriteLine("Ingrese el dni del paciente");
+												dni = int.Parse(Console.ReadLine());
+												Console.Clear();
+												servicioInternar.agregarPaciente(new Paciente(nombre,apellido,dni,"Ingreso",medACargo));
+												servicioInternar.camas = servicioInternar.camas - 1;
+												Console.WriteLine("Internacion registrada");}}}
+									conInt = conInt + 1;}
+						break;
+						}
+					case "d":{
+					break;
+						}
 					case "e":{Console.WriteLine("E");
 					break;}
 					case "f":{Console.WriteLine("F");
