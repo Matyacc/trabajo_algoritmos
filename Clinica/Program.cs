@@ -26,6 +26,9 @@ namespace Clinica
 				}
 			}
 		}
+		public static void despedirMedico(Medico med){
+		
+		}
 		
 		
 		public static void Main(string[] args)

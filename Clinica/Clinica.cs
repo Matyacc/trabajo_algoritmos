@@ -31,6 +31,12 @@ namespace Clinica
 			get{
 				return _medicos;
 			}}
+		
+		public ArrayList pacientes{
+			get{
+				return _pacientes;
+			}
+		}
 			
 			public ArrayList servicios{
 				get{
