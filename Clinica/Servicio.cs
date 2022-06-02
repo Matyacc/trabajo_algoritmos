@@ -25,7 +25,6 @@ namespace Clinica
 		private Persona Jefe;
 		private string Especialidad;
 		private ArrayList Plantel = new ArrayList();
-		private ArrayList Pacientes = new ArrayList();
 		private int Camas;
 		
 		/*CONSTRUCTOR*/
@@ -43,20 +42,35 @@ namespace Clinica
 			Plantel.Add(med);
 		}
 		
-		public void agregarPaciente(Paciente pac)
-		{
-			Pacientes.Add(pac);
-		}
 		
+		
+		public void eliminarMedico(Medico med){
+			Plantel.Remove(med);
+		}
 		
 		
 		/*SETTER Y GETTER*/
 		public Persona jefe{
-			get{return Jefe;}
+			set {
+				Jefe = value;
+			}
+			get{
+				return Jefe;
+			}
 		}
 		
 		public string especialidad{
-			get{ return Especialidad;}
+			set{
+				Especialidad = value;
+			}
+			get{
+				return Especialidad;
+			}
+		}
+		
+		public int camas{
+			set{Camas = value;}
+			get{return Camas;}
 		}
 		
 		public ArrayList plantel{
@@ -64,10 +78,8 @@ namespace Clinica
 				return Plantel;
 			}
 		}
-		public int camas{
-			set{Camas = value;}
-			get{return Camas;}
-		}
+		
+		
 		}
 	
 	}

@@ -16,28 +16,20 @@ namespace Clinica
 	/// </summary>
 	public class Clinica
 	{	
-		string nombre;
-		private ArrayList _medicos = new ArrayList(); 
-		private ArrayList _pacientes = new ArrayList();
+		private string Nombre;
 		private ArrayList _servicios = new ArrayList();
 		
-		public Clinica(string nombre)
+		public Clinica(string Nombre)
 		{
-			this.nombre = nombre;
+			this.Nombre = Nombre;
 		}
 		
-		
-		public ArrayList  medicos{
+		public string nombre{
 			get{
-				return _medicos;
-			}}
-		
-		public ArrayList pacientes{
-			get{
-				return _pacientes;
+				return Nombre;
 			}
 		}
-			
+		
 			public ArrayList servicios{
 				get{
 					return _servicios;

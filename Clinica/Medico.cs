@@ -11,6 +11,7 @@
  * 
  */
 using System;
+using System.Collections;
 
 namespace Clinica
 {
@@ -19,15 +20,30 @@ namespace Clinica
 	/// </summary>
 	public class Medico : Persona
 	{	
-		private string Especialidad, Horario;
-		private int Legajo;
+		private string Especialidad, Legajo, Horario;
+				private ArrayList Pacientes = new ArrayList();
+
 		
 		
-		public Medico(String No, String Ap, int dni, int legajo, string especialidad, string horario) : base (No,Ap,dni)
+		public Medico(String No, String Ap, int dni, string legajo, string especialidad, string horario) : base (No,Ap,dni)
 		{
 			this.Legajo = legajo;
 			this.Especialidad = especialidad;
 			this.Horario = horario;
+		}
+		
+		
+		public void agregarPaciente(Paciente pac)
+		{
+			Pacientes.Add(pac);
+		}
+		
+		public void altaPaciente(Paciente pac){
+			Pacientes.Remove(pac);
+		}
+		
+		public void imprimir(){
+			Console.WriteLine(especialidad + " (Legajo: " + Legajo + ") " + nombre + " " + apellido);
 		}
 		
 		public string especialidad{
@@ -36,8 +52,13 @@ namespace Clinica
 		public string horario{
 			get{return Horario;}
 		}
-		public int legajo{
-			get{return legajo;}
+		public string legajo{
+			get{return Legajo;}
+		}
+		public ArrayList pacientes{
+			get{
+				return Pacientes;
+			}
 		}
 		}
 	}
