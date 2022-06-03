@@ -32,7 +32,7 @@ namespace Clinica
 		{
 			this.Jefe = jf;
 			this.Especialidad = esp;
-			this.Camas =  cantCamas;
+			this.Camas = cantCamas;
 			
 		}
 		
