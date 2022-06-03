@@ -33,22 +33,11 @@ namespace Clinica
 						
 						int opcionServicio = verificarIngresoInt() - 1;
 						
-						while (opcionServicio > contador -2){
+						while (opcionServicio < 1 || opcionServicio > contador -2){
 							opcionServicio = verificarIngresoInt() - 1;
 						}
-						
-						contador = 0;
-						foreach(Servicio servi in CL.servicios){
-							while(opcionServicio != contador){
-								contador = contador + 1;
-								if (contador > CL.servicios.Count){
-								break;
-								}
-							}
-								return servi;
-							}
-						return new Servicio(new Persona("a","a",123),"asd",123);
-						}
+						return (Servicio) CL.servicios[opcionServicio];}
+
 		
 		public static Medico seleccionarMedico(Servicio Servi){
 						int contador = 1;
@@ -62,18 +51,18 @@ namespace Clinica
 						while (opcionMedico > contador -2){
 							opcionMedico = verificarIngresoInt() - 1;
 						}
-						
-						contador = 0;
-						foreach(Medico med in Servi.plantel){
-							while(opcionMedico != contador){
-								contador = contador + 1;
-								if (contador > Servi.plantel.Count){
-								break;
-								}
-							}
-								return med;
-							}
-						return new Medico("asd","asd",123,"asd","asd","asd");
+						return (Medico) Servi.plantel[opcionMedico];
+			//			contador = 0;
+			//			foreach(Medico med in Servi.plantel){
+			//				while(opcionMedico != contador){
+			//					contador = contador + 1;
+			//					if (contador > Servi.plantel.Count){
+			//					break;
+			//					}
+			//				}
+			//					return med;
+			//				}
+			//			return new Medico("asd","asd",123,"asd","asd","asd");
 			
 		}
 		
@@ -94,6 +83,7 @@ namespace Clinica
 			foreach(Servicio srv in CL.servicios){
 				foreach(Medico med in srv.plantel){
 					if(legajo == med.legajo){
+						encontrado = true;
 						if(med.pacientes.Count > 0){
 							Console.WriteLine("No se puede eliminar el medico porque tiene pacientes a cargo");
 						}
@@ -198,7 +188,7 @@ namespace Clinica
 			m8 = new Medico("Melany","acosta",9,"9","Guardia","Tarde");
 			m9 = new Medico("Milton","gerez",10,"10","Guardia","Noche");
 			
-			Traumatologia = new Servicio(new Persona("Jefe","Traumatologia",123),"Traumatologia",15);
+			Traumatologia = new Servicio(new Persona("Jefe","Traumatologia",123),"Traumatologia",1);
 			Guardia = new Servicio(new Persona("Jefe","Guardia",123), "Guardia", 5);
 			Pediatria = new Servicio(new Medico("Jefe","Pediatria",123,"2341","Pediatria","Noche"),"Pediatria",1);
 			Oftalmologia = new Servicio(new Persona("Jefe","Oftalmologia",123),"Oftalmologia",2);
@@ -245,7 +235,7 @@ namespace Clinica
 					contador = contador + 1;
 				}
 				opcionEspecialidadMedico = verificarIngresoInt() - 1;
-				while(opcionEspecialidadMedico < 1 || opcionEspecialidadMedico > clinicaActiva.servicios.Count -1){
+				while(opcionEspecialidadMedico < 1 || opcionEspecialidadMedico > clinicaActiva.servicios.Count){
 					Console.WriteLine("Ingreso una opcion incorrecta");
 					opcionEspecialidadMedico = verificarIngresoInt() - 1;
 				}
@@ -301,10 +291,15 @@ namespace Clinica
 					string nombre, apellido, diagnostico;
 					int dni;
 					Servicio servicioSeleccionado = seleccionarServicio(clinicaActiva);
+					Console.WriteLine(servicioSeleccionado.especialidad);
+					try{
 					if(servicioSeleccionado.plantel.Count == 0){
 						Console.WriteLine("No hay medicos disponibles en este servicio");
 						}
 					else{
+						if (servicioSeleccionado.camas == 0){
+							throw new SinCama();
+						}
 						Medico medicoSeleccionado = seleccionarMedico(servicioSeleccionado);
 						Console.Clear();
 						Console.WriteLine("Ingrese el nombre del paciente");
@@ -322,6 +317,8 @@ namespace Clinica
 						servicioSeleccionado.camas = servicioSeleccionado.camas - 1;
 						Console.WriteLine("Internacion registrada");
 						medicoSeleccionado.agregarPaciente(new Paciente(nombre,apellido,dni,diagnostico));
+						}} catch(SinCama){
+						Console.WriteLine("No se puede internar al paciente porque no hay camas");
 						}
 					volverAlMenu();
 					break;
