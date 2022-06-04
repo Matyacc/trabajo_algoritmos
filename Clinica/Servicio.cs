@@ -25,6 +25,7 @@ namespace Clinica
 		private Persona Jefe;
 		private string Especialidad;
 		private ArrayList Plantel = new ArrayList();
+		private ArrayList Pacientes = new ArrayList();
 		private int Camas;
 		
 		/*CONSTRUCTOR*/
@@ -46,6 +47,15 @@ namespace Clinica
 		
 		public void eliminarMedico(Medico med){
 			Plantel.Remove(med);
+		}
+		
+		public void internarPaciente(Paciente pac)
+		{
+			Pacientes.Add(pac);
+		}
+		
+		public void altaPaciente(Paciente pac){
+			Pacientes.Remove(pac);
 		}
 		
 		
@@ -79,6 +89,11 @@ namespace Clinica
 			}
 		}
 		
+		public ArrayList pacientes{
+			get{
+				return Pacientes;
+			}
+		}
 		
 		}
 	

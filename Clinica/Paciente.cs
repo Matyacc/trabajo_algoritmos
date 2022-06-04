@@ -18,15 +18,22 @@ namespace Clinica
 	/// </summary>
 	public class Paciente : Persona
 	{
-		private string Diagnostico;
+		private string Diagnostico,medicoACargo;
 		
-		public Paciente(string no, string ap, int dni, string diag) : base (no,ap,dni)
+		public Paciente(string no, string ap, int dni, string diag, string legajoDelMedico) : base (no,ap,dni)
 		{
 			this.Diagnostico = diag;
+			this.medicoACargo = legajoDelMedico;
 		}
 		
 		public string diagnostico{
 			get{ return Diagnostico;}
+		}
+		
+		public string medicoAcargo{
+			get{
+				return medicoACargo;
+			}
 		}
 		
 		}

@@ -21,7 +21,6 @@ namespace Clinica
 	public class Medico : Persona
 	{	
 		private string Especialidad, Legajo, Horario;
-		private ArrayList Pacientes = new ArrayList();
 
 		
 		
@@ -33,14 +32,7 @@ namespace Clinica
 		}
 		
 		
-		public void internarPaciente(Paciente pac)
-		{
-			Pacientes.Add(pac);
-		}
 		
-		public void altaPaciente(Paciente pac){
-			Pacientes.Remove(pac);
-		}
 		
 		public string especialidad{
 			get{return Especialidad;}
@@ -51,11 +43,7 @@ namespace Clinica
 		public string legajo{
 			get{return Legajo;}
 		}
-		public ArrayList pacientes{
-			get{
-				return Pacientes;
-			}
-		}
+
 		}
 	}
 

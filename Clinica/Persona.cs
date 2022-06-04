@@ -25,6 +25,15 @@ namespace Clinica
 			this.Dni = Dni;
 		}
 		
+		public void imprimir(){
+			Console.WriteLine("--------------");
+			Console.WriteLine("Dni: " + Dni);
+			Console.WriteLine("Nombre: " + Nombre);
+			Console.WriteLine("Apellido: " + Apellido);
+			Console.WriteLine("--------------");
+		}
+		
+		
 		
 		public string nombre{
 			get{
