@@ -42,10 +42,6 @@ namespace Clinica
 			Pacientes.Remove(pac);
 		}
 		
-		public void imprimir(){
-			Console.WriteLine(especialidad + " (Legajo: " + Legajo + ") " + nombre + " " + apellido);
-		}
-		
 		public string especialidad{
 			get{return Especialidad;}
 		}

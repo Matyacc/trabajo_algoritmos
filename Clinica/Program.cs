@@ -18,10 +18,9 @@ namespace Clinica
 	class Program
 	{	 
 		
-		public static void agregarMedicoAlServicio(Clinica CL){
+		internal static void agregarMedicoAlServicio(Clinica CL){
 			string nombreMedico, apellidoMedico,legajoMedico,especialidadMedico,horario;
-			int dniMedico,contador,opcionEspecialidadMedico,opcionHorario;
-			Medico nuevoMedico;
+			int dniMedico,opcionHorario;
 			Console.WriteLine("Ingrese el nombre del medico");
 			nombreMedico = verificarIngresoString();
 			Console.Clear();
@@ -34,26 +33,8 @@ namespace Clinica
 			Console.WriteLine("Ingrese el numero de legajo del medico");
 			legajoMedico = verificarIngresoString();
 			Console.Clear();
-			contador = 1;
-			foreach(Servicio srv in CL.servicios){
-				Console.WriteLine(contador + ") " + srv.especialidad);
-				contador = contador + 1;
-			}
-			opcionEspecialidadMedico = verificarIngresoInt() - 1;
-			while(opcionEspecialidadMedico < 1 || opcionEspecialidadMedico > CL.servicios.Count){
-				Console.WriteLine("Ingreso una opcion incorrecta");
-				opcionEspecialidadMedico = verificarIngresoInt() - 1;
-			}
-			Console.Clear();
-			especialidadMedico = "";
-			contador = 0;
-			foreach(Servicio srv in CL.servicios){
-				if(opcionEspecialidadMedico == contador){
-				   	especialidadMedico = srv.especialidad;
-				   }
-				   contador = contador + 1;
-			}
-
+			Servicio servicioSeleccionado = seleccionarServicio(CL);
+			especialidadMedico = servicioSeleccionado.especialidad;
 			Console.WriteLine("Seleccione el horario laboral del medico");
 			Console.WriteLine("1 para turno mañana");
 			Console.WriteLine("2 para turno tarde");
@@ -79,75 +60,13 @@ namespace Clinica
 						break;
 					}
 			}
-			nuevoMedico = new Medico(nombreMedico,apellidoMedico,dniMedico,legajoMedico,especialidadMedico,horario);
-			contratarMedico(nuevoMedico,CL);
-			nuevoMedico.imprimir();
-		}
-		
-		
-		
-		public static Servicio seleccionarServicio(Clinica CL){
-			Console.Clear();
-			int contador = 1;
-			Console.WriteLine("Seleccione el servicio");
-			foreach (Servicio servicioprueba in CL.servicios){
-			Console.WriteLine(contador + ") " + servicioprueba.especialidad);
-			contador = contador + 1;
-			}
-			
-			int opcionServicio = verificarIngresoInt() - 1;
-			
-			while (opcionServicio < 0 || opcionServicio > contador -2){
-				Console.WriteLine("Ingreso una opcion incorrecta");
-				opcionServicio = verificarIngresoInt() - 1;
-			}
-			
-			return (Servicio) CL.servicios[opcionServicio];}
-
-		
-		public static Medico seleccionarMedico(Servicio Servi){
-			Console.Clear();
-			int contador = 1;
-			Console.WriteLine("Seleccione el medico");
-			foreach (Medico Medic in Servi.plantel){
-			Console.WriteLine(contador + ") " + Medic.nombre + " " + Medic.apellido);
-			contador = contador + 1;
-			}
-			int opcionMedico = verificarIngresoInt() - 1;
-			
-			while (opcionMedico < 0 || opcionMedico > contador -2){
-				Console.WriteLine("Ingreso una opcion incorrecta");
-				opcionMedico = verificarIngresoInt() - 1;
-			}
-			return (Medico) Servi.plantel[opcionMedico];			
-			}
-		
-		public static Paciente seleccionarPaciente(Medico Medi){
-			int contador = 1;
-			Console.Clear();
-			Console.WriteLine("Seleccione al paciente");
-			foreach(Paciente paciente in Medi.pacientes){
-				Console.WriteLine(contador + ") " + paciente.nombre + " " + paciente.apellido);
-				contador = contador + 1;
-			}
-			int opcionPaciente = verificarIngresoInt() - 1;
-			return (Paciente) Medi.pacientes[opcionPaciente];
-			
-		}
-		
-		
-		public static void contratarMedico(Medico med,Clinica CL){
-			foreach(Servicio servi in CL.servicios){
-				if(med.especialidad == servi.especialidad){
-					servi.agregarMedico(med);
-					break;
+					servicioSeleccionado.agregarMedico(new Medico(nombreMedico,apellidoMedico,dniMedico,legajoMedico,especialidadMedico,horario));
+					horario = horario.ToLower();
+					escribirVerde("El medico " + nombreMedico + " " + apellidoMedico + " se agrego al servicio " + servicioSeleccionado.especialidad + " turno " + horario);
 				}
-			}
-		}
 		
 		
-		
-		public static void despedirMedico(Clinica CL){
+		internal static void despedirMedico(Clinica CL){
 			string legajo;
 			Console.WriteLine("Ingrese el numero de legajo del medico que desea eliminar");
 			legajo = verificarIngresoString();
@@ -157,28 +76,28 @@ namespace Clinica
 					if(legajo == med.legajo){
 						encontrado = true;
 						if(med.pacientes.Count > 0){
-							Console.WriteLine("No se puede eliminar el medico porque tiene pacientes a cargo");
+							escribirRojo("No se puede eliminar el medico porque tiene pacientes a cargo");
 						}
 						else{
 							srv.plantel.Remove(med);
-							Console.WriteLine("Medico eliminado");
+							escribirVerde("Medico eliminado");
 							break;
 						}
 					}
 				}
 			}
 			if(encontrado == false){
-				Console.WriteLine("No existe ningun medico con ese numero de legajo");
+				escribirRojo("No existe ningun medico con ese numero de legajo");
 			}
 			}
-		
+	
 		internal static void internarPacienteEnServicio(Clinica CL){
 			string nombre, apellido, diagnostico;
 			int dni;
 			Servicio servicioSeleccionado = seleccionarServicio(CL);
 			try{
 			if(servicioSeleccionado.plantel.Count == 0){
-				Console.WriteLine("No hay medicos disponibles en este servicio");
+				escribirRojo("No hay medicos disponibles en este servicio");
 				}
 			else{
 				if (servicioSeleccionado.camas == 0){
@@ -199,15 +118,30 @@ namespace Clinica
 				diagnostico = verificarIngresoString();
 				Console.Clear();
 				servicioSeleccionado.camas = servicioSeleccionado.camas - 1;
-				Console.WriteLine("Internacion registrada");
+				escribirVerde("Internacion registrada");
 				medicoSeleccionado.internarPaciente(new Paciente(nombre,apellido,dni,diagnostico));
 				}} catch(SinCama){
-				Console.WriteLine("No se puede internar al paciente porque no hay camas");
+				escribirRojo("No se puede internar al paciente porque no hay camas");
 				}
 			volverAlMenu();
 		}
 		
-		
+		internal static void darDeAltaPaciente(Clinica CL){
+			Servicio ServicioSeleccionado = seleccionarServicio(CL);
+			Medico MedicoSeleccionado = seleccionarMedico(ServicioSeleccionado);
+			if (MedicoSeleccionado.pacientes.Count > 0){
+				Paciente PacienteSeleccionado = seleccionarPaciente(MedicoSeleccionado);
+				MedicoSeleccionado.pacientes.Remove(PacienteSeleccionado);
+				ServicioSeleccionado.camas = ServicioSeleccionado.camas + 1;
+				escribirVerde("El paciente " + PacienteSeleccionado.nombre + " " + PacienteSeleccionado.apellido + " fue dado de alta correctamente");
+				volverAlMenu();
+			}
+			else{
+				Console.WriteLine("El medico no tiene pacientes a cargo");
+				volverAlMenu();
+			}
+		}
+
 		internal static void serviciosNocturnos(Clinica CL){
 			foreach (Servicio servicioNocturno in CL.servicios){
 				foreach(Medico medicoNocturno in servicioNocturno.plantel){
@@ -220,16 +154,6 @@ namespace Clinica
 			volverAlMenu();
 		}
 		
-		
-		internal static void darDeAltaPaciente(Clinica CL){
-			Servicio ServicioSeleccionado = seleccionarServicio(CL);
-			Medico MedicoSeleccionado = seleccionarMedico(ServicioSeleccionado);
-			Paciente PacienteSeleccionado = seleccionarPaciente(MedicoSeleccionado);
-			MedicoSeleccionado.pacientes.Remove(PacienteSeleccionado);
-			ServicioSeleccionado.camas = ServicioSeleccionado.camas + 1; 
-			}
-		
-		
 		internal static void mostrarServicios(Clinica CL){
 			
 					int contServicios = 0;
@@ -241,26 +165,106 @@ namespace Clinica
 		}
 		
 		internal static void mostrarPacientesDeServicio(Clinica CL){
+			bool esVacio = true;
 			Servicio servicio = seleccionarServicio(CL);
 			foreach (Medico med in servicio.plantel){
 				foreach(Paciente pac in med.pacientes){
 				Console.WriteLine(pac.nombre + " " + pac.apellido + " (" + pac.diagnostico + ")");
+				esVacio = false;
 				}
+			}
+			if(esVacio == true){
+				escribirRojo("No hay pacientes internados en el servicio seleccionado");
 			}
 			volverAlMenu();
 		}
 		
-		
 		internal static void nuevoServicio(Clinica CL){
 			string nombreJefe,apellidoJefe,nuevaEspecialidad;
 			int dniJefe,cantidadDeCamas;
+			Console.Clear();
+			Console.WriteLine("Ingrese el nombre del jefe de servicio");
 			nombreJefe = verificarIngresoString();
+			Console.Clear();
+			Console.WriteLine("ingrese el apellido del jefe de servicio");
 			apellidoJefe = verificarIngresoString();
+			Console.Clear();
+			Console.WriteLine("Ingrese el dni del jefe de servicio");
 			dniJefe = verificarIngresoInt();
+			Console.Clear();
+			Console.WriteLine("Ingrese la especialidad del nuevo servicio");
 			nuevaEspecialidad = verificarIngresoString();
+			Console.Clear();
+			Console.WriteLine("Ingrese la cantidad de camas del nuevo servicio");
 			cantidadDeCamas = verificarIngresoInt();
 			CL.servicios.Add(new Servicio(new Persona(nombreJefe,apellidoJefe,dniJefe),nuevaEspecialidad,cantidadDeCamas));
+			Console.Clear(); 
+			escribirVerde("Servicio " + nuevaEspecialidad + " agregado exitosamente");
 			volverAlMenu();
+		}
+		
+		internal static Servicio seleccionarServicio(Clinica CL){
+			Console.Clear();
+			int contador = 1;
+			Console.WriteLine("Seleccione el servicio");
+			foreach (Servicio servicioprueba in CL.servicios){
+			Console.WriteLine(contador + ") " + servicioprueba.especialidad);
+			contador = contador + 1;
+			}
+			
+			int opcionServicio = verificarIngresoInt() - 1;
+			
+			while (opcionServicio < 0 || opcionServicio > contador -2){
+				escribirRojo("Ingreso una opcion incorrecta");
+				opcionServicio = verificarIngresoInt() - 1;
+			}
+			
+			return (Servicio) CL.servicios[opcionServicio];}
+
+		internal static Medico seleccionarMedico(Servicio Servi){
+			Console.Clear();
+			int contador = 1;
+			Console.WriteLine("Seleccione el medico");
+			foreach (Medico Medic in Servi.plantel){
+			Console.WriteLine(contador + ") " + Medic.nombre + " " + Medic.apellido);
+			contador = contador + 1;
+			}
+			int opcionMedico = verificarIngresoInt() - 1;
+			
+			while (opcionMedico < 0 || opcionMedico > contador -2){
+				escribirRojo("Ingreso una opcion incorrecta");
+				opcionMedico = verificarIngresoInt() - 1;
+			}
+			return (Medico) Servi.plantel[opcionMedico];			
+			}
+		
+		internal static Paciente seleccionarPaciente(Medico Medi){
+			int contador = 1;
+			Console.Clear();
+			Console.WriteLine("Seleccione al paciente");
+			foreach(Paciente paciente in Medi.pacientes){
+				Console.WriteLine(contador + ") " + paciente.nombre + " " + paciente.apellido);
+				contador = contador + 1;
+			}
+			int opcionPaciente = verificarIngresoInt() - 1;
+			while (opcionPaciente < 0 || opcionPaciente > Medi.pacientes.Count -1){
+				escribirRojo("ingreso una opcion incorrecta");
+				opcionPaciente = verificarIngresoInt() - 1;
+			}
+			return (Paciente) Medi.pacientes[opcionPaciente];
+			
+		}
+		
+		internal static void escribirVerde(string texto){
+			Console.ForegroundColor = ConsoleColor.Green;
+			Console.WriteLine(texto);
+			Console.ForegroundColor = ConsoleColor.Gray;
+		}
+		
+		internal static void escribirRojo(string texto){
+			Console.ForegroundColor = ConsoleColor.Red;
+			Console.WriteLine(texto);
+			Console.ForegroundColor = ConsoleColor.Gray;
 		}
 		
 		internal static int verificarIngresoInt(){
@@ -275,31 +279,34 @@ namespace Clinica
 				esNumero = true;
 			}
 			catch{
-				Console.WriteLine("(Solo puede ingresar numeros)");
+				escribirRojo("(Solo puede ingresar numeros)");
 				aVerificar = Console.ReadLine();
 			}
 			}
 			return datoVerificado;
-		}
+		}		
 		
 		internal static string verificarIngresoString(){
 			string aVerificar = Console.ReadLine();
 			while(aVerificar.Length == 0){
-				Console.WriteLine("No puede dejar el campo vacio");
+				escribirRojo("No puede dejar el campo vacio");
 				aVerificar = Console.ReadLine();
 			}
 			return aVerificar;
 		}
 		
-		public static void listarMedicos(Clinica CL){
+		internal static void listarMedicos(Clinica CL){
 			Console.Clear();
 			foreach (Servicio srv in CL.servicios){
-				Console.WriteLine(srv.especialidad);
+				Console.WriteLine(srv.especialidad.ToUpper());
 				Console.WriteLine();
 				foreach (Medico med in srv.plantel){
-				Console.WriteLine(med.legajo + ") " + med.nombre + " " + med.apellido);	
+					Console.WriteLine("Legajo: " + med.legajo);
+					Console.WriteLine("Nombre: " + med.nombre);
+					Console.WriteLine("Apellido: " + med.apellido);
+					Console.WriteLine();
 				}
-				Console.WriteLine();
+				Console.WriteLine("-----------------------");
 						}
 			volverAlMenu();
 		}
@@ -311,71 +318,79 @@ namespace Clinica
 			Console.Clear();
 		}
 		
-		internal static string Menu(){
+		internal static string Menu(Clinica CL){
+			Console.Title = "Clinica " + CL.nombre;
 			string opcion;
 			Console.Clear();
 			Console.WriteLine("MENU PRINCIPAL");
 			Console.WriteLine();
-			Console.WriteLine("* a) Agregar un médico en el servicio correspondiente a su especialidad");
-			Console.WriteLine("* b) Eliminar un médico dado");
-			Console.WriteLine("* c) Internar un paciente en un servicio dado y a cargo de un médico determinado");
-			Console.WriteLine("* d) Listado de los servicios que tienen médicos de guardia en horario nocturno");
-			Console.WriteLine("* e) Dar el alta a un paciente internado en un servicio dado y a cargo de un médico determinado.");
-			Console.WriteLine("* f) Listado de servicios");
-			Console.WriteLine("* g) Listado de médicos");
-			Console.WriteLine("* h) Listado de pacientes de un servicio");
-			Console.WriteLine("* i) Salir del programa");
+			Console.WriteLine("* A) Agregar un médico en el servicio correspondiente a su especialidad");
+			Console.WriteLine("* B) Eliminar un médico dado");
+			Console.WriteLine("* C) Internar un paciente en un servicio dado y a cargo de un médico determinado");
+			Console.WriteLine("* D) Dar el alta a un paciente internado en un servicio dado y a cargo de un médico determinado.");
+			Console.WriteLine("* E) Listado de los servicios que tienen médicos de guardia en horario nocturno");
+			Console.WriteLine("* F) Listado de servicios");
+			Console.WriteLine("* G) Listado de médicos");
+			Console.WriteLine("* H) Listado de pacientes de un servicio");
+			Console.WriteLine("* I) Agregar un nuevo servicio");
+			Console.WriteLine("* J) Salir del programa");
 			Console.WriteLine("");
 			Console.WriteLine("Ingrese una opcion");
-			opcion = Console.ReadLine();
+			opcion = Console.ReadLine().ToLower();
 			Console.Clear();
 			return opcion;
 		}
 		
+		
+		// esta funcion no es necesaria para el funcionamiento del programa
+		// sirve para cargar algunos medicos a penas inicia el programa
+		internal static void cargaMedicoTest(Medico med, Clinica CL){
+			foreach (Servicio srv in CL.servicios){
+				if(med.especialidad == srv.especialidad){
+					srv.plantel.Add(med);
+				}
+			}
+		}
+		internal static void cargaPacienteTest(Paciente PA,Servicio srv,int posicion){
+			(((Medico) srv.plantel[posicion]).pacientes).Add(PA);
+		}
+		
+		
+		
 		public static void Main(string[] args)
 		{	
-			string opcion;
+			
+			//Agregando objetos para poder probar el programa
 			Clinica clinicaActiva = new Clinica("Monte Grande");
-			Servicio Traumatologia, Guardia, Pediatria, Oftalmologia;
-			Medico m0,m1,m2,m3,m4,m5,m6,m7,m8,m9;
+			clinicaActiva.servicios.Add(new Servicio(new Persona("Jefe","Traumatologia",123),"Traumatologia",1));
+			clinicaActiva.servicios.Add(new Servicio(new Persona("Jefe","Guardia",123), "Guardia", 15));
+			clinicaActiva.servicios.Add(new Servicio(new Medico("Jefe","Pediatria",123,"2341","Pediatria","Noche"),"Pediatria",5));
+			clinicaActiva.servicios.Add(new Servicio(new Persona("Jefe","Cardiologia",123),"Cardiologia",1));
+			clinicaActiva.servicios.Add(new Servicio(new Persona("Rita","Mendoza",654),"COVID19", 250));
+			cargaMedicoTest(new Medico("Marcos","ayala",1,"1","Pediatria","Mañana"),clinicaActiva);
+			cargaMedicoTest(new Medico("Maria","Rodriguez",2,"2","Cardiologia","Mañana"),clinicaActiva);
+			cargaMedicoTest(new Medico("Patricio","Gonzalez",3,"3","Traumatologia","Mañana"),clinicaActiva);
+			cargaMedicoTest(new Medico("Agustin","Lopez",4,"4","Traumatologia","Tarde"),clinicaActiva);
+			cargaMedicoTest(new Medico("Tomas","Medina",5,"5","Guardia","Mañana"),clinicaActiva);
+			cargaMedicoTest(new Medico("Maira","Rodriguez",8,"8","Pediatria","Tarde"),clinicaActiva);
+			cargaMedicoTest(new Medico("Melany","acosta",9,"9","Guardia","Tarde"),clinicaActiva);
+			cargaMedicoTest(new Medico("Milton","gerez",10,"10","Guardia","Noche"),clinicaActiva);
+			cargaMedicoTest(new Medico("Emanuel","Gonzalez",11,"11","Guardia","Noche"),clinicaActiva);
+			cargaMedicoTest(new Medico("Tomas","Valenzuela",12,"12","COVID19","Tarde"),clinicaActiva);
+			cargaPacienteTest(new Paciente("Pablo","Marimar",123,"COVID POSITIVO"),(Servicio) clinicaActiva.servicios[4],0);
+			cargaPacienteTest(new Paciente("Maria","Perez",124,"COVID POSITIVO"),(Servicio) clinicaActiva.servicios[4],0);
+			cargaPacienteTest(new Paciente("Juan","Mamani",125,"COVID POSITIVO"),(Servicio) clinicaActiva.servicios[4],0);
+			cargaPacienteTest(new Paciente("Graciela","Acosta",126,"fractura de femur"),(Servicio) clinicaActiva.servicios[0],0);
+			cargaPacienteTest(new Paciente("Melina","Salvatierra",127,"Rehabilitacion"),(Servicio) clinicaActiva.servicios[0],1);
+			cargaPacienteTest(new Paciente("Malena","Perez",128,"Golpe en la cabeza"),(Servicio) clinicaActiva.servicios[0],0);
+			cargaPacienteTest(new Paciente("Matias","Gerez",129,"Preinfarto"),(Servicio) clinicaActiva.servicios[3],0);
+			cargaPacienteTest(new Paciente("Pablo","Mamani",130,"cirugia programada"),(Servicio) clinicaActiva.servicios[3],0);
+			cargaPacienteTest(new Paciente("Emiliano","Corvalan",131,"Sin diagnosticar"),(Servicio) clinicaActiva.servicios[2],0);
+			cargaPacienteTest(new Paciente("Pablo","Escobar",132,"Sin diagnosticar"),(Servicio) clinicaActiva.servicios[2],0);
 			
-			m0 = new Medico("Marcos","ayala",1,"1","Pediatria","Mañana");
-			m1 = new Medico("Maria","Rodriguez",2,"2","Oftalmologia","Mañana");
-			m2 = new Medico("Patricio","Gonzalez",3,"3","Traumatologia","Mañana");
-			m3 = new Medico("Agustin","Lopez",4,"4","Traumatologia","Tarde");
-			m4 = new Medico("Tomas","Medina",5,"5","Guardia","Mañana");
-			m5 = new Medico("Pepe","schel",6,"6","Traumatologia","Noche");
-			m6 = new Medico("Bob","esponja",7,"7","Guardia","Noche");
-			m7 = new Medico("Masha","yoso",8,"8","Pediatria","Tarde");
-			m8 = new Medico("Melany","acosta",9,"9","Guardia","Tarde");
-			m9 = new Medico("Milton","gerez",10,"10","Guardia","Noche");
 			
-			Traumatologia = new Servicio(new Persona("Jefe","Traumatologia",123),"Traumatologia",1);
-			Guardia = new Servicio(new Persona("Jefe","Guardia",123), "Guardia", 5);
-			Pediatria = new Servicio(new Medico("Jefe","Pediatria",123,"2341","Pediatria","Noche"),"Pediatria",1);
-			Oftalmologia = new Servicio(new Persona("Jefe","Oftalmologia",123),"Oftalmologia",2);
-			
-			clinicaActiva.servicios.Add(Traumatologia);
-			clinicaActiva.servicios.Add(Guardia);
-			clinicaActiva.servicios.Add(Pediatria);
-			clinicaActiva.servicios.Add(Oftalmologia);
-			
-			contratarMedico(m0,clinicaActiva);
-			contratarMedico(m1,clinicaActiva);
-			contratarMedico(m2,clinicaActiva);
-			contratarMedico(m3,clinicaActiva);
-			contratarMedico(m4,clinicaActiva);
-			contratarMedico(m5,clinicaActiva);
-			contratarMedico(m6,clinicaActiva);
-			contratarMedico(m7,clinicaActiva);
-			contratarMedico(m8,clinicaActiva);
-			contratarMedico(m9,clinicaActiva);
-			m1.internarPaciente(new Paciente("Marta", "Gomez",12123456,"Ingreso"));
-			m2.internarPaciente(new Paciente("Mirta","Sanchez",3214567,"Ingreso"));
-			
-
-			                                          
-			opcion = Menu();
+			string opcion;                                          
+			opcion = Menu(clinicaActiva);
 			while (opcion != "j"){
 			switch (opcion){
 			case "a":{
@@ -390,11 +405,11 @@ namespace Clinica
 				internarPacienteEnServicio(clinicaActiva);
 				break;}
 			case "d":{
-				serviciosNocturnos(clinicaActiva);
-				break;}
-			case "e":{
 				darDeAltaPaciente(clinicaActiva);
 				break;}	
+			case "e":{
+				serviciosNocturnos(clinicaActiva);
+				break;}
 			case "f":{
 				mostrarServicios(clinicaActiva);
 				break;}
@@ -405,16 +420,13 @@ namespace Clinica
 				mostrarPacientesDeServicio(clinicaActiva);
 				break;}	
 			case "i":{
-					nuevoServicio(clinicaActiva);
-					break;}
-					
+				nuevoServicio(clinicaActiva);
+				break;}	
 				}
 
-				opcion = Menu();
+				opcion = Menu(clinicaActiva);
 			}
-			// TODO: Implement Functionality Here
-			Console.Write("Hasta luego. . . ");
-			Console.ReadKey(true);
+
 		}
 	}
 }

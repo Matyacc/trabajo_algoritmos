@@ -51,9 +51,11 @@
     <Compile Include="Paciente.cs" />
     <Compile Include="Persona.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Servicio.cs" />
     <Compile Include="SinCama.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Clinica.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
