@@ -23,7 +23,7 @@ namespace Clinica
 		private string Especialidad, Legajo, Horario;
 
 		
-		
+		//CONSTRUCTOR
 		public Medico(String No, String Ap, int dni, string legajo, string especialidad, string horario) : base (No,Ap,dni)
 		{
 			this.Legajo = legajo;
@@ -31,6 +31,7 @@ namespace Clinica
 			this.Horario = horario;
 		}
 		
+		//METODOS
 		public override void imprimir(){
 			Console.WriteLine("-----------------------");
 			Console.WriteLine("legajo: " + Legajo);
@@ -40,7 +41,7 @@ namespace Clinica
 			Console.WriteLine("-----------------------");
 		}
 		
-		
+		/*SETTER Y GETTER*/
 		public string especialidad{
 			get{return Especialidad;}
 		}

@@ -18,6 +18,8 @@ namespace Clinica
 		private string Nombre, Apellido;
 		private int Dni;
 		
+		
+		//CONSTRUCTOR
 		public Persona(string Nombre,string Apellido,int Dni)
 		{
 			this.Nombre = Nombre;
@@ -25,6 +27,7 @@ namespace Clinica
 			this.Dni = Dni;
 		}
 		
+		//METODOS
 		virtual public void imprimir(){
 			Console.WriteLine("--------------");
 			Console.WriteLine("Dni: " + Dni);
@@ -34,7 +37,7 @@ namespace Clinica
 		}
 		
 		
-		
+		/*SETTER Y GETTER*/
 		public string nombre{
 			get{
 				return Nombre;

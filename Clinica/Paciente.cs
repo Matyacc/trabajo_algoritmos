@@ -20,12 +20,14 @@ namespace Clinica
 	{
 		private string Diagnostico,medicoACargo;
 		
+		//CONSTRUCTOR
 		public Paciente(string no, string ap, int dni, string diag, string legajoDelMedico) : base (no,ap,dni)
 		{
 			this.Diagnostico = diag;
 			this.medicoACargo = legajoDelMedico;
 		}
 		
+		//PROPIEDADES
 		public override void imprimir(){
 			Console.WriteLine("--------------------------------------------------------");
 			Console.WriteLine("Dni: " + base.dni);
@@ -34,11 +36,18 @@ namespace Clinica
 			Console.WriteLine("--------------------------------------------------------");
 		}
 		
+		/*SETTER Y GETTER*/
 		public string diagnostico{
+			set{
+				Diagnostico = value;
+			}
 			get{ return Diagnostico;}
 		}
 		
 		public string medicoAcargo{
+			set{
+				medicoACargo = value;
+			}
 			get{
 				return medicoACargo;
 			}
