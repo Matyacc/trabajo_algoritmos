@@ -284,12 +284,13 @@ namespace Clinica
 			Servicio servicioSeleccionado = seleccionarServicio(CL);
 			escribirRojo("ADVERTENCIA!!!");
 			Console.WriteLine("Si elimina el servicio tambien se eliminaran todos los medicos y pacientes que contenga");
-			Console.WriteLine("Escriba 'Confirmar' si desea eliminarlo o 'Cancelar' para volver al menu");
+			Console.WriteLine("Escriba 'Confirmar' si desea eliminarlo o precione enter para volver al menu");
 			opcion = Console.ReadLine();
 			if (opcion.ToLower() == "confirmar"){
 				CL.eliminarServicio(servicioSeleccionado);
+				escribirVerde("Servicio eliminado");
+				volverAlMenu();
 			}
-			volverAlMenu();
 			
 		}
 		
@@ -433,10 +434,10 @@ namespace Clinica
 			srv.internarPaciente(PA);
 		}
 		internal static void cargarObjetosDePrueba(Clinica CL){
-			CL.nuevoServicio(new Servicio(new Persona("Jefe","Traumatologia",123),"Traumatologia",1));
+			CL.nuevoServicio(new Servicio(new Persona("Jefe","Traumatologia",123),"Traumatologia",3));
 			CL.nuevoServicio(new Servicio(new Persona("Jefe","Guardia",123), "Guardia", 15));
 			CL.nuevoServicio(new Servicio(new Medico("Jefe","Pediatria",123,"2341","Pediatria","Noche"),"Pediatria",5));
-			CL.nuevoServicio(new Servicio(new Persona("Jefe","Cardiologia",123),"Cardiologia",1));
+			CL.nuevoServicio(new Servicio(new Persona("Jefe","Cardiologia",123),"Cardiologia",3));
 			CL.nuevoServicio(new Servicio(new Persona("Rita","Mendoza",654),"COVID19", 250));
 			cargaMedicoTest(new Medico("Marcos","ayala",1,"1","Pediatria","Mañana"),CL);
 			cargaMedicoTest(new Medico("Maria","Rodriguez",2,"2","Cardiologia","Mañana"),CL);

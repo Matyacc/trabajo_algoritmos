@@ -33,6 +33,7 @@ namespace Clinica
 			Console.WriteLine("Dni: " + base.dni);
 			Console.WriteLine("Nombre del paciente: " + base.nombre + " " + base.apellido);
 			Console.WriteLine("Medico a cargo: " + medicoACargo);
+			Console.WriteLine("Diganostico: " + Diagnostico);
 			Console.WriteLine("--------------------------------------------------------");
 		}
 		
