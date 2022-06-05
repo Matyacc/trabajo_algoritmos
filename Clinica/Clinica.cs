@@ -17,11 +17,19 @@ namespace Clinica
 	public class Clinica
 	{	
 		private string Nombre;
-		private ArrayList _servicios = new ArrayList();
+		private ArrayList Servicios = new ArrayList();
 		
 		public Clinica(string Nombre)
 		{
 			this.Nombre = Nombre;
+		}
+		
+		public void nuevoServicio(Servicio serv){
+			servicios.Add(serv);
+		}
+		
+		public void eliminarServicio(Servicio serv){
+			servicios.Remove(serv);
 		}
 		
 		public string nombre{
@@ -29,10 +37,9 @@ namespace Clinica
 				return Nombre;
 			}
 		}
-		
 			public ArrayList servicios{
 				get{
-					return _servicios;
+					return Servicios;
 				}
 			}
 		}

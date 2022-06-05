@@ -26,6 +26,14 @@ namespace Clinica
 			this.medicoACargo = legajoDelMedico;
 		}
 		
+		public override void imprimir(){
+			Console.WriteLine("--------------------------------------------------------");
+			Console.WriteLine("Dni: " + base.dni);
+			Console.WriteLine("Nombre del paciente: " + base.nombre + " " + base.apellido);
+			Console.WriteLine("Medico a cargo: " + medicoACargo);
+			Console.WriteLine("--------------------------------------------------------");
+		}
+		
 		public string diagnostico{
 			get{ return Diagnostico;}
 		}

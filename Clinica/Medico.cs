@@ -31,7 +31,14 @@ namespace Clinica
 			this.Horario = horario;
 		}
 		
-		
+		public override void imprimir(){
+			Console.WriteLine("-----------------------");
+			Console.WriteLine("legajo: " + Legajo);
+			Console.WriteLine("Dni: " + base.dni);
+			Console.WriteLine("Nombre: " + base.nombre);
+			Console.WriteLine(base.apellido);
+			Console.WriteLine("-----------------------");
+		}
 		
 		
 		public string especialidad{

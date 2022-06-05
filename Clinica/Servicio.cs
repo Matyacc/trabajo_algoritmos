@@ -52,10 +52,12 @@ namespace Clinica
 		public void internarPaciente(Paciente pac)
 		{
 			Pacientes.Add(pac);
+			Camas -= 1;
 		}
 		
 		public void altaPaciente(Paciente pac){
 			Pacientes.Remove(pac);
+			Camas += 1;
 		}
 		
 		
