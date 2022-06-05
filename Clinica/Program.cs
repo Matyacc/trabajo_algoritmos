@@ -204,15 +204,17 @@ namespace Clinica
 		}
 		
 		internal static void mostrarServiciosNocturnos(Clinica CL){
-			verificarDatos(CL.servicios);
+			int contador = 0;
 			foreach (Servicio servicioNocturno in CL.servicios){
 				foreach(Medico medicoNocturno in servicioNocturno.plantel){
 					if(medicoNocturno.horario == "Noche"){
 						Console.WriteLine(servicioNocturno.especialidad);
+						contador += 1;
 						break;
 					}
 				}
 			}
+			if(contador == 0){escribirRojo("No hay servicios nocturnos");};
 			volverAlMenu();
 		}
 		
@@ -270,6 +272,19 @@ namespace Clinica
 			volverAlMenu();
 		}
 		
+		internal static void eliminarServicio(Clinica CL){
+			string opcion;
+			Servicio servicioSeleccionado = seleccionarServicio(CL);
+			escribirRojo("ADVERTENCIA!!!");
+			Console.WriteLine("Si elimina el servicio tambien se eliminaran todos los medicos y pacientes que contenga");
+			Console.WriteLine("Escriba 'Confirmar' si desea eliminarlo o 'Cancelar' para volver al menu");
+			opcion = Console.ReadLine();
+			if (opcion.ToLower() == "confirmar"){
+				CL.eliminarServicio(servicioSeleccionado);
+			}
+			volverAlMenu();
+			
+		}
 		internal static Servicio seleccionarServicio(Clinica CL){
 			Console.Clear();
 			int contador = 1;
@@ -386,7 +401,8 @@ namespace Clinica
 			Console.WriteLine("* G) Listado de médicos");
 			Console.WriteLine("* H) Listado de pacientes de un servicio");
 			Console.WriteLine("* I) Agregar un nuevo servicio");
-			Console.WriteLine("* J) Salir del programa");
+			Console.WriteLine("* J) Eliminar un servicio");
+			Console.WriteLine("* x) Salir del programa");
 			Console.WriteLine("");
 			Console.WriteLine("Ingrese una opcion");
 			opcion = Console.ReadLine().ToLower();
@@ -397,57 +413,55 @@ namespace Clinica
 		
 //		 las siguientes funciones no son necesarias para el funcionamiento del programa
 //		 sirve para cargar algunos objetos de prueba
-		
-//		
+			
 		internal static void cargaMedicoTest(Medico med, Clinica CL){
 			foreach (Servicio srv in CL.servicios){
 				if(med.especialidad == srv.especialidad){
-					srv.plantel.Add(med);
+					srv.agregarMedico(med);
 				}
 			}
 		}
 		internal static void cargaPacienteTest(Paciente PA,Servicio srv,int posicion){
-			srv.pacientes.Add(PA);
+			srv.internarPaciente(PA);
+		}	
+		internal static void cargarObjetosDePrueba(Clinica CL){
+			CL.nuevoServicio(new Servicio(new Persona("Jefe","Traumatologia",123),"Traumatologia",1));
+			CL.nuevoServicio(new Servicio(new Persona("Jefe","Guardia",123), "Guardia", 15));
+			CL.nuevoServicio(new Servicio(new Medico("Jefe","Pediatria",123,"2341","Pediatria","Noche"),"Pediatria",5));
+			CL.nuevoServicio(new Servicio(new Persona("Jefe","Cardiologia",123),"Cardiologia",1));
+			CL.nuevoServicio(new Servicio(new Persona("Rita","Mendoza",654),"COVID19", 250));
+			cargaMedicoTest(new Medico("Marcos","ayala",1,"1","Pediatria","Mañana"),CL);
+			cargaMedicoTest(new Medico("Maria","Rodriguez",2,"2","Cardiologia","Mañana"),CL);
+			cargaMedicoTest(new Medico("Patricio","Gonzalez",3,"3","Traumatologia","Mañana"),CL);
+			cargaMedicoTest(new Medico("Agustin","Lopez",4,"4","Traumatologia","Tarde"),CL);
+			cargaMedicoTest(new Medico("Tomas","Medina",5,"5","Guardia","Mañana"),CL);
+			cargaMedicoTest(new Medico("Maira","Rodriguez",8,"8","Pediatria","Tarde"),CL);
+			cargaMedicoTest(new Medico("Melany","acosta",9,"9","Guardia","Tarde"),CL);
+			cargaMedicoTest(new Medico("Milton","gerez",10,"10","Guardia","Noche"),CL);
+			cargaMedicoTest(new Medico("Emanuel","Gonzalez",11,"11","Guardia","Noche"),CL);
+			cargaMedicoTest(new Medico("Tomas","Valenzuela",12,"12","COVID19","Tarde"),CL);
+			cargaPacienteTest(new Paciente("Pablo","Marimar",123,"COVID POSITIVO","12"),(Servicio) CL.servicios[4],0);
+			cargaPacienteTest(new Paciente("Maria","Perez",124,"COVID POSITIVO","12"),(Servicio) CL.servicios[4],0);
+			cargaPacienteTest(new Paciente("Juan","Mamani",125,"COVID POSITIVO","12"),(Servicio) CL.servicios[4],0);
+			cargaPacienteTest(new Paciente("Graciela","Acosta",126,"fractura de femur","3"),(Servicio) CL.servicios[0],0);
+			cargaPacienteTest(new Paciente("Melina","Salvatierra",127,"Rehabilitacion","4"),(Servicio) CL.servicios[0],1);
+			cargaPacienteTest(new Paciente("Malena","Perez",128,"Golpe en la cabeza","3"),(Servicio) CL.servicios[0],0);
+			cargaPacienteTest(new Paciente("Matias","Gerez",129,"Preinfarto","2"),(Servicio) CL.servicios[3],0);
+			cargaPacienteTest(new Paciente("Pablo","Mamani",130,"cirugia programada","2"),(Servicio) CL.servicios[3],0);
+			cargaPacienteTest(new Paciente("Emiliano","Corvalan",131,"Sin diagnosticar","9"),(Servicio) CL.servicios[2],0);
+			cargaPacienteTest(new Paciente("Pablo","Escobar",132,"Sin diagnosticar","10"),(Servicio) CL.servicios[2],0);
 		}
-//		
+		
 		
 		public static void Main(string[] args)
 		{	
 			Clinica clinicaActiva = new Clinica("Monte Grande");
 			
-//			//Agregando objetos para poder probar el programa
-//			
-			clinicaActiva.nuevoServicio(new Servicio(new Persona("Jefe","Traumatologia",123),"Traumatologia",1));
-			clinicaActiva.nuevoServicio(new Servicio(new Persona("Jefe","Guardia",123), "Guardia", 15));
-			clinicaActiva.nuevoServicio(new Servicio(new Medico("Jefe","Pediatria",123,"2341","Pediatria","Noche"),"Pediatria",5));
-			clinicaActiva.nuevoServicio(new Servicio(new Persona("Jefe","Cardiologia",123),"Cardiologia",1));
-			clinicaActiva.nuevoServicio(new Servicio(new Persona("Rita","Mendoza",654),"COVID19", 250));
-			cargaMedicoTest(new Medico("Marcos","ayala",1,"1","Pediatria","Mañana"),clinicaActiva);
-			cargaMedicoTest(new Medico("Maria","Rodriguez",2,"2","Cardiologia","Mañana"),clinicaActiva);
-			cargaMedicoTest(new Medico("Patricio","Gonzalez",3,"3","Traumatologia","Mañana"),clinicaActiva);
-			cargaMedicoTest(new Medico("Agustin","Lopez",4,"4","Traumatologia","Tarde"),clinicaActiva);
-			cargaMedicoTest(new Medico("Tomas","Medina",5,"5","Guardia","Mañana"),clinicaActiva);
-			cargaMedicoTest(new Medico("Maira","Rodriguez",8,"8","Pediatria","Tarde"),clinicaActiva);
-			cargaMedicoTest(new Medico("Melany","acosta",9,"9","Guardia","Tarde"),clinicaActiva);
-			cargaMedicoTest(new Medico("Milton","gerez",10,"10","Guardia","Noche"),clinicaActiva);
-			cargaMedicoTest(new Medico("Emanuel","Gonzalez",11,"11","Guardia","Noche"),clinicaActiva);
-			cargaMedicoTest(new Medico("Tomas","Valenzuela",12,"12","COVID19","Tarde"),clinicaActiva);
-			cargaPacienteTest(new Paciente("Pablo","Marimar",123,"COVID POSITIVO","12"),(Servicio) clinicaActiva.servicios[4],0);
-			cargaPacienteTest(new Paciente("Maria","Perez",124,"COVID POSITIVO","12"),(Servicio) clinicaActiva.servicios[4],0);
-			cargaPacienteTest(new Paciente("Juan","Mamani",125,"COVID POSITIVO","12"),(Servicio) clinicaActiva.servicios[4],0);
-			cargaPacienteTest(new Paciente("Graciela","Acosta",126,"fractura de femur","3"),(Servicio) clinicaActiva.servicios[0],0);
-			cargaPacienteTest(new Paciente("Melina","Salvatierra",127,"Rehabilitacion","4"),(Servicio) clinicaActiva.servicios[0],1);
-			cargaPacienteTest(new Paciente("Malena","Perez",128,"Golpe en la cabeza","3"),(Servicio) clinicaActiva.servicios[0],0);
-			cargaPacienteTest(new Paciente("Matias","Gerez",129,"Preinfarto","2"),(Servicio) clinicaActiva.servicios[3],0);
-			cargaPacienteTest(new Paciente("Pablo","Mamani",130,"cirugia programada","2"),(Servicio) clinicaActiva.servicios[3],0);
-			cargaPacienteTest(new Paciente("Emiliano","Corvalan",131,"Sin diagnosticar","9"),(Servicio) clinicaActiva.servicios[2],0);
-			cargaPacienteTest(new Paciente("Pablo","Escobar",132,"Sin diagnosticar","10"),(Servicio) clinicaActiva.servicios[2],0);
-//			
-//			A PARTIR DE ACA EMPIEZA EL PROGRAMA    
+//			cargarObjetosDePrueba(clinicaActiva);
 			
 			string opcion;
 			opcion = Menu(clinicaActiva);
-			while (opcion != "j"){
+			while (opcion != "x"){
 				switch (opcion){
 						case "a":{
 							verificacionInicial(clinicaActiva,agregarMedicoAlServicio);
@@ -476,6 +490,10 @@ namespace Clinica
 						case "i":{
 							nuevoServicio(clinicaActiva);
 							break;}
+						case "j":{
+							verificacionInicial(clinicaActiva,eliminarServicio);
+							break;
+						}
 				}
 
 				opcion = Menu(clinicaActiva);
